@@ -3,7 +3,7 @@
 import unittest
 
 
-class Test{%cookiecutter.project_slug%}(unittest.TestCase):
+class Test{{cookiecutter.project_slug}}(unittest.TestCase):
     """Basic tests.
     """
     def test_basic(self):
