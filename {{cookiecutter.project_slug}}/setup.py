@@ -4,6 +4,14 @@ from glob import glob
 from setuptools import setup, find_packages
 from pip.req import parse_requirements
 from pip.download import PipSession
+import re
+import ast
+
+_version_re = re.compile(r'__version__\s+=\s+(.*)')
+
+with open('src/{{ cookiecutter.project_slug }}/__init__.py', 'rb') as f:
+    version = str(ast.literal_eval(_version_re.search(
+        f.read().decode('utf-8')).group(1)))
 
 with open('README.rst') as readme_file:
     readme = readme_file.read()
@@ -30,7 +38,7 @@ test_requirements = [str(tr.req) for tr in parsed_test_requirements]
 
 setup(
     name='{{ cookiecutter.project_slug }}',
-    version='{{ cookiecutter.version }}',
+    version=version,
     description="{{ cookiecutter.project_short_description }}",
     long_description=readme + '\n\n' + history,
     author="{{ cookiecutter.full_name.replace('\"', '\\\"') }}",
