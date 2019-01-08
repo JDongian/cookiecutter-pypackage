@@ -1,3 +1,5 @@
+Out of date. Don't use this.
+
 ===========================
 Python Package Cookiecutter 
 ===========================
