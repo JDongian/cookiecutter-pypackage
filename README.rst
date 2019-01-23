@@ -1,5 +1,3 @@
-Out of date. Don't use this.
-
 ===========================
 Python Package Cookiecutter 
 ===========================
@@ -8,11 +6,16 @@ Cookiecutter template for a Python package.
 * GitHub repo: https://github.com/jdongian/cookiecutter-pypackage/
 * Free software: BSD license
 
+
 Features
 --------
-* Testing setup with ``unittest``
-* Tox testing: Setup to easily test for Python 3.4, 3.5
+* Good requirements handling with parsing from ``requirements.txt`` and ``requirements_dev.txt`` files
+* ``# -*- coding: utf-8 -*-`` headers
+* ``unittest`` test boilerplate
+* tiny ``argparse`` shim
+* ``tox`` to set up testing matrix for multiple python versions
 * Sphinx docs: Documentation ready for generation with, for example, ReadTheDocs
+
 
 Usage
 -----
