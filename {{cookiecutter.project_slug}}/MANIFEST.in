@@ -1,12 +1,9 @@
-include HISTORY.rst
 {% set is_open_source = cookiecutter.open_source_license != 'Not open source' -%}
 {% if is_open_source %}
 include LICENSE
 {% endif %}
 include README.rst
-
 recursive-include tests *
+recursive-include docs Makefile
 recursive-exclude * __pycache__
 recursive-exclude * *.py[co]
-
-recursive-include docs *.rst conf.py Makefile make.bat *.jpg *.png *.gif

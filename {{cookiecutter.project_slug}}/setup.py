@@ -2,12 +2,42 @@
 # -*- coding: utf-8 -*-
 from glob import glob
 from setuptools import setup, find_packages
-from pip.req import parse_requirements
-from pip.download import PipSession
 import re
 import ast
 
 _version_re = re.compile(r'__version__\s+=\s+(.*)')
+
+
+def parse_requirements(filehandle):
+    """Copied from reqirements.parser.
+    https://requirements-parser.readthedocs.io/en/latest/index.html
+    """
+    for line in filehandle:
+        line = line.strip()
+        if line == '':
+            continue
+        elif not line or line.startswith('#'):
+            # comments are lines that start with # only
+            continue
+        elif line.startswith('-r') or line.startswith('--requirement'):
+            _, new_filename = line.split()
+            new_file_path = os.path.join(os.path.dirname(filename or '.'),
+                                         new_filename)
+            with open(new_file_path) as f:
+                for requirement in parse(f):
+                    yield requirement
+        elif line.startswith('-f') or line.startswith('--find-links') or \
+                line.startswith('-i') or line.startswith('--index-url') or \
+                line.startswith('--extra-index-url') or \
+                line.startswith('--no-index'):
+            warnings.warn('Private repos not supported. Skipping.')
+            continue
+        elif line.startswith('-Z') or line.startswith('--always-unzip'):
+            warnings.warn('Unused option --always-unzip. Skipping.')
+            continue
+        else:
+            yield line
+
 
 with open('src/{{ cookiecutter.project_slug }}/__init__.py', 'rb') as f:
     version = str(ast.literal_eval(_version_re.search(
@@ -16,17 +46,10 @@ with open('src/{{ cookiecutter.project_slug }}/__init__.py', 'rb') as f:
 with open('README.rst') as readme_file:
     readme = readme_file.read()
 
-with open('HISTORY.rst') as history_file:
-    history = history_file.read()
-
-parsed_requirements = parse_requirements(
-    'requirements.txt',
-    session=PipSession())
-parsed_test_requirements = parse_requirements(
-    'requirements_dev.txt',
-    session=PipSession())
-requirements = [str(ir.req) for ir in parsed_requirements]
-test_requirements = [str(tr.req) for tr in parsed_test_requirements]
+with open('requirements.txt', 'r') as req_file:
+    requirements = list(parse_requirements(req_file))
+with open('requirements_dev.txt', 'r') as req_dev_file:
+    test_requirements = list(parse_requirements(req_dev_file))
 
 {%- set license_classifiers = {
     'MIT license': 'License :: OSI Approved :: MIT License',
@@ -40,7 +63,7 @@ setup(
     name='{{ cookiecutter.project_slug }}',
     version=version,
     description="{{ cookiecutter.project_short_description }}",
-    long_description=readme + '\n\n' + history,
+    long_description=readme,
     author="{{ cookiecutter.full_name.replace('\"', '\\\"') }}",
     author_email='{{ cookiecutter.email }}',
     packages=find_packages('src'),

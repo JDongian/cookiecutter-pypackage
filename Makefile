@@ -14,3 +14,6 @@ watch: bake
 replay: BAKE_OPTIONS=--replay
 replay: watch
 	;
+
+clean:
+	rm -rf python_lorem
