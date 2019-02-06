@@ -43,7 +43,7 @@ with open('src/{{ cookiecutter.project_slug }}/__init__.py', 'rb') as f:
     version = str(ast.literal_eval(_version_re.search(
         f.read().decode('utf-8')).group(1)))
 
-with open('README.rst') as readme_file:
+with open('README.rst', 'r', encoding='utf8') as readme_file:
     readme = readme_file.read()
 
 with open('requirements.txt', 'r') as req_file:
